@@ -2,6 +2,7 @@ library(ggplot2)
 library(dplyr)
 library(glue)
 
+setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 df1 <- read.csv('/Users/wenggeiwong/Downloads/AllFISData_WithLeafIDs_WithFlux_2026.csv')
 df1 <- df1 %>% mutate(IsoFlux = IsoFlux*5/1000)
 
@@ -151,7 +152,7 @@ time_to_mins <- function(time_string){
 }
 
 find_lens <- function(){
-  ratios_times_df <- read.csv('/Users/wenggeiwong/Downloads/ratio_df_wtimes.csv')
+  ratios_times_df <- read.csv('ratio_df_wtimes.csv')
   difference_times <- list()
   for(i in 1:nrow(ratios_times_df)){
     
@@ -180,7 +181,7 @@ scatter_difference_a <- function(ratios_times_df){
   cor <- pearson$estimate
   print(glue("p-val: {p_val}, confidence int: {conf_int}, r: {cor}"))
   
-  return(ggplot(data=ratios_times_df,mapping=aes(x=unlist(differences),y=A,color=factor(LeafName))) + 
+  return(ggplot(data=ratios_times_df,mapping=aes(x=unlist(differences),y=IsoFlux,color=factor(LeafName))) + 
     geom_point() + geom_smooth(method='lm',se=FALSE,color='red'))
 }
 
